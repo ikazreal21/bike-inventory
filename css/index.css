@@ -1,0 +1,242 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0.5rem;
+    margin-top: 4rem;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.disabled{
+    pointer-events:none;
+    opacity: 0.6;
+}
+
+/* Login */
+
+.main {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.login {
+    margin: auto;
+    margin-top: 1rem;
+    width: 50%;
+    border: 3px solid black;
+    border-radius: 1.5rem;
+}
+
+.admin {
+    margin: auto;
+    width: 10%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.admin img {
+    margin-top: 1.5rem;
+    margin-right: 10px;
+    padding: 1px;
+}
+
+.login-form input{
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: 3px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+/* Main Page */
+
+.admin-main ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+}
+
+.admin-main li a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+}
+
+.admin-main li {
+    text-align: center;
+    margin: 1rem;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+}
+
+/* Change the link color on hover */
+.admin-main li a:hover {
+    background-color: #BDD6EF;
+    border-radius: 2px;
+    color: white;
+}
+
+.admin-main .admin-image {
+    width: 200px;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.admin-main .logout {
+    margin-top: 10rem;
+    width: 90px;
+}
+
+
+/* Admin Contents */
+
+.admin-contents {
+    width: 80%;
+}
+
+.admin-contents li a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+}
+
+.admin-contents li {
+    width: 170px;
+    list-style-type: none;
+    text-align: center;
+    margin: 1rem;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+}
+
+/* Change the link color on hover */
+.admin-contents li a:hover {
+    background-color: #BDD6EF;
+    border-radius: 2px;
+    color: white;
+}
+
+.admin-contents .navbar {
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Admin Table */
+
+.admin-tables {
+    width: 90%;
+    margin: auto;
+}
+
+.admin-select input {
+    width: 110px;
+    list-style-type: none;
+    text-align: center;
+    margin: 0.1rem;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+}
+
+.admin-select select {
+    width: 130px;
+    text-align: center;
+    margin: 1rem;
+    padding: 8px;
+    border: 2px solid black;
+    background-color: rgb(248, 195, 160);
+}
+
+/* Change the link color on hover */
+.admin-select input:hover,
+.admin-select select:hover {
+    background-color: #BDD6EF;
+    border-radius: 2px;
+    color: white;
+}
+
+
+.inventory {
+    width: 95%;
+    margin: auto;
+    text-align: center;
+}
+
+.inventory th, td {
+    border-collapse: separate;
+    border: 2px solid rgb(248, 195, 160);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.inventory th {
+    background-color: rgb(248, 195, 160);
+    color: black;
+}
+
+/* Order Form */
+
+.tran-form {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.tran-form .form-group {
+    text-align: left;
+    width: 50%;
+    margin: auto;
+}
+
+.tran-form select,
+.tran-form .form-group input {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+.tran-form .form-group input {
+    margin-left: 1.1rem;
+}
+
+.tran-form .form-group input[type="date"] {
+    margin-left: 3rem;
+}
+
+.tran-form .form-group select {
+    margin-left: 2.5rem;
+}
+
+.tran-form .btn {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 100px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+.tran-form .buttons-form {
+    margin-top: 1rem;
+}
