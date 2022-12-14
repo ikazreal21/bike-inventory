@@ -1,55 +1,58 @@
-<?php 
+<?php
 
 include "../dbcon.php";
 
-
-
-$statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity > 2');
+$statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity >= 2');
 $statement->execute();
 $inventory = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+
+// echo '<pre>';
+// var_dump($inventory);
+// echo '<pre>';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $id = $_POST['items'];
-  $quantity = $_POST['quantity'];
-  $orderdate = $_POST['orderdate'];
-  $existingquantity = '';
-  $newquantity = '';
+    $id = $_POST['items'];
+    $quantity = $_POST['quantity'];
+    $orderdate = date("Y-m-d");
+    $existingquantity = '';
+    $newquantity = '';
 
-
-  $statement = $pdo->prepare('SELECT * FROM tbl_inventory WHERE item_id = :id');
-  $statement->bindValue(':id', $id);
-  $statement->execute();
-  $selected_prod = $statement->fetch(PDO::FETCH_ASSOC);
-  $existingquantity = $selected_prod['quantity'];
-  $item_name = $selected_prod['item_name'];
-  $item_type = $selected_prod['type'];
-  $item_price = $quantity * $selected_prod['price'];
-
-  if ($quantity < $existingquantity) {
-    $newquantity = $existingquantity - $quantity;
-    $statement = $pdo->prepare("UPDATE tbl_inventory set quantity = :IQUAN WHERE item_id = :id");
-    $statement->bindValue(':IQUAN', $newquantity);
+    $statement = $pdo->prepare('SELECT * FROM tbl_inventory WHERE item_id = :id');
     $statement->bindValue(':id', $id);
     $statement->execute();
-  }
+    $selected_prod = $statement->fetch(PDO::FETCH_ASSOC);
+    $existingquantity = $selected_prod['quantity'];
+    $item_name = $selected_prod['item_name'];
+    $item_type = $selected_prod['type'];
+    $item_price = $quantity * $selected_prod['price'];
 
-
-  if (empty($errors)) {
-      $statement = $pdo->prepare("INSERT INTO order_form (ORDER_DATE, ITEM_TYPE, ITEM_NAME, description, ORDER_QUANTITY, amount)
+    if ($quantity < $existingquantity) {
+        $newquantity = $existingquantity - $quantity;
+        $statement = $pdo->prepare("UPDATE tbl_inventory set quantity = :IQUAN WHERE item_id = :id");
+        $statement->bindValue(':IQUAN', $newquantity);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+    }
+    echo $errors;
+    
+    if (empty($errors)) {
+        $statement = $pdo->prepare("INSERT INTO order_form (ORDER_DATE, ITEM_TYPE, ITEM_NAME, description, ORDER_QUANTITY, amount)
         VALUES (:ORDER_DATE, :ITEM_TYPE, :ITEM_NAME, :description, :ORDER_QUANTITY, :amount)"
-      );
+        );
 
-      $statement->bindValue(':ORDER_DATE', $orderdate);
-      $statement->bindValue(':ITEM_TYPE', $item_type);
-      $statement->bindValue(':ITEM_NAME', $item_name);
-      $statement->bindValue(':description', '');
-      $statement->bindValue(':ORDER_QUANTITY', $quantity);
-      $statement->bindValue(':amount', $item_price);
-      $statement->execute();
+        $statement->bindValue(':ORDER_DATE', $orderdate);
+        $statement->bindValue(':ITEM_TYPE', $item_type);
+        $statement->bindValue(':ITEM_NAME', $item_name);
+        $statement->bindValue(':description', '');
+        $statement->bindValue(':ORDER_QUANTITY', $quantity);
+        $statement->bindValue(':amount', $item_price);
+        $statement->execute();
 
-      header("location:order.php");
-  }
+        header("location:order.php");
+    }
 }
+
 
 
 ?>
@@ -89,40 +92,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="#">Order Summary</a></li>
         <li><a href="#">Reciept</a></li>
       </div>
-      <div class="tran-form">
-        <form method="POST" action="">
-          <div class="form-group">
-            <label for="">Items:</label>
-            <select name="items">
-              <option selected value="">Select Items</option>
-              <?php foreach ($inventory as $i => $item):?>
-                <option 
-                value="<?php echo $item['item_id']; ?>">
-                <?php echo $item['item_name']; ?>
-              </option>
-              <?php endforeach;?>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="">Date:</label>
-            <input type=date name=orderdate>
-          </div>
-          <div class="form-group">
-            <label for="">Quantity:</label>
-            <input
-              type="number"
-              class="form-control"
-              name="quantity"
-              required
-            />
-          </div>
-
-          <div class="buttons-form">
-            <input type="submit" class="btn" value="Add Order" />
-            <!-- <input type="submit" class="btn" value="Delete Item" /> -->
-            <input type="reset" class="btn" value="Cancel" />
-          </div>
-        </form>
+      <div class="tran-form-card">
+        <?php foreach ($inventory as $i => $item): ?>
+        <div class="flex-wrapper">
+          <form method="POST" action="" class="form-card" >
+            <div class="card">
+              <img src="<?php echo $item['image']; ?>" alt="item image" style="width:100%;">
+              <div class="container">
+                <h4><b><?php echo $item['item_name']; ?></b></h4>
+                <p><?php echo $item['type']; ?></p>
+                <input type="text" name="items" value="<?php echo $item['item_id']; ?>" hidden/>
+                <input type="number" class="form-control" name="quantity" placeholder="Quantity" required />
+                <input type="submit" class="btn" value="Add Order" />
+              </div>
+            </div>
+            <!-- <div class="buttons-form"> -->
+              <!-- <input type="submit" class="btn" value="Delete Item" /> -->
+              <!-- <input type="reset" class="btn" value="Cancel" /> -->
+              <!-- </div> -->
+          </form>
+        </div>
+        <?php endforeach;?>
       </div>
     </div>
   </body>

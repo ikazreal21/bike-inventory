@@ -5,19 +5,17 @@ include "../dbcon.php";
 $search = $_GET['type'] ?? '';
 
 if ($search) {
-    $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME');
+    $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME order by item_id desc');
     $statement->bindValue(':INAME', "%$search%");
 } else {
-    $statement = $pdo->prepare('SELECT * FROM tbl_inventory');
+    $statement = $pdo->prepare('SELECT * FROM tbl_inventory order by item_id desc');
 }
 
 $statement->execute();
 $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-
-
 // echo '<pre>';
-// var_dump($row);
+// var_dump($date);
 // echo '<pre>';
 
 
@@ -73,6 +71,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <table class="inventory">
         <tr>
             <th>Item Code</th>
+            <th>Item Image</th>
             <th>Name of Item</th>
             <th>Type</th>
             <th>Quantity</th>
@@ -82,11 +81,14 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
           <?php foreach ($row as $i => $item):?>
         <tr>
 			<td><?php echo $item['item_id']; ?></td>
+			<td>
+        <img src="<?php echo $item['image']; ?>"  width="200" height="100">
+      </td>
 			<td><?php echo $item['item_name']; ?></td>
 			<td><?php echo $item['type']; ?></td>
 			<td><?php echo $item['quantity']; ?></td>
 			<td><?php echo $item['price']; ?></td>
-            <?php if ($item['quantity'] < 2): ?>
+            <?php if ($item['quantity'] <= 2): ?>
 			    <td>Low on Stocks</td>
             <?php else: ?>
                 <td>Good Stocks</td>

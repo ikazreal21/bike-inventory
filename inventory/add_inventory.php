@@ -1,6 +1,7 @@
 <?php
 
 include "../dbcon.php";
+include "../randomstring.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
@@ -8,15 +9,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type = $_POST['types'];
     $price = $_POST['price'];
 
+    if (!is_dir('./img')) {
+      mkdir('./img');
+    }
+
     if (empty($errors)) {
-        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price)
-        VALUES (:item_name, :type, :quantity, :price)"
+        $image = $_FILES['image'];
+        $imagePath = '';
+
+        if ($image) {
+            $imagePath = '../inventory/img/'.randomString(8, 1).'/'.$image['name'];
+            mkdir(dirname($imagePath));
+            move_uploaded_file($image['tmp_name'], $imagePath);
+        }
+
+        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image)
+        VALUES (:item_name, :type, :quantity, :price, :image)"
         );
 
         $statement->bindValue(':item_name', $name);
         $statement->bindValue(':type', $type);
         $statement->bindValue(':quantity', $quantity);
         $statement->bindValue(':price', $price);
+        $statement->bindValue(':image', $imagePath);
         $statement->execute();  
 
         header("location:inventory.php");
@@ -47,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h4>Welcome to Admin!</h4>
       </div>
       <ul>
-        <li class="disabled"><a href="order.php">Transactions</a></li>
-        <li><a href="../inventory/inventory.php">Inventory</a></li>
+        <li><a href="../order/order.php">Transactions</a></li>
+        <li class="disabled" ><a href="../inventory/inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
@@ -60,7 +75,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="out_stock.php">Out of Stock</a></li>
       </div>
       <div class="tran-form">
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="form-label">Product Img</label>
+            <input
+              type="file"
+              class="form-control"
+              name="image"
+            />
+        </div>
         <div class="form-group">
             <label for="">Items Name:</label>
             <input

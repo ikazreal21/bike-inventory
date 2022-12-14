@@ -5,10 +5,10 @@ include "../dbcon.php";
 $search = $_GET['search'] ?? '';
 
 if ($search) {
-    $statement = $pdo->prepare('SELECT * FROM order_form where ITEM_NAME like :INAME ORDER BY ORDER_DATE');
+    $statement = $pdo->prepare('SELECT * FROM order_form where ITEM_NAME like :INAME ORDER BY ID desc');
     $statement->bindValue(':INAME', "%$search%");
 } else {
-    $statement = $pdo->prepare('SELECT * FROM order_form ORDER BY ORDER_DATE');
+    $statement = $pdo->prepare('SELECT * FROM order_form ORDER BY ID desc');
 }
 
 $statement->execute();

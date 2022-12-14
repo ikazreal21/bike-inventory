@@ -191,12 +191,30 @@ body {
 
 /* Order Form */
 
+.tran-form-card {
+    width: 100%;
+    margin: auto;
+    margin-top: 2rem;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.tran-form-card .form-card{
+    text-align: center;
+}
+
 .tran-form {
     width: 80%;
     margin: auto;
     margin-top: 2rem;
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
+
 
 .tran-form .form-group {
     text-align: left;
@@ -205,7 +223,8 @@ body {
 }
 
 .tran-form select,
-.tran-form .form-group input {
+.tran-form .form-group input,
+.tran-form-card input {
     margin: 0.5rem;
     padding: 0.5rem;
     width: 200px;
@@ -213,6 +232,10 @@ body {
     border-radius: 5px;
     background-color: rgb(248, 195, 160);
     font-weight: bold;
+}
+
+.tran-form-card input {
+    width: 200px;
 }
 
 .tran-form .form-group input {
@@ -237,6 +260,52 @@ body {
     font-weight: bold;
 }
 
+.tran-form-card .btn {
+    margin: 0.5rem;
+    padding: 0.2rem;
+    width: 100px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
 .tran-form .buttons-form {
     margin-top: 1rem;
 }
+
+.tran-form-card .flex-wrapper {
+    width: 20%;
+    margin: 1rem;
+    text-align: center;
+}
+
+
+
+
+/* Card */
+
+.tran-form-card .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    /* border: 1px solid black; */
+    transition: 0.3s;
+    width: 120%;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.tran-form-card .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.tran-form-card img {
+    border-radius: 5px 5px 0 0;
+}
+
+.tran-form-card p {
+    font-size: 9px;
+}
+
+/* .tran-form .container {
+    padding: 2px 16px;
+} */
