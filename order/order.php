@@ -100,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <img src="<?php echo $item['image']; ?>" alt="item image" style="width:100%;">
               <div class="container">
                 <h4><b><?php echo $item['item_name']; ?></b></h4>
+                <h4><b>₱<?php echo $item['price']; ?></b></h4>
                 <p><?php echo $item['type']; ?></p>
                 <input type="text" name="items" value="<?php echo $item['item_id']; ?>" hidden/>
                 <input type="number" class="form-control" name="quantity" placeholder="Quantity" required />
