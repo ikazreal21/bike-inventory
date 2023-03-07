@@ -3,7 +3,7 @@
 
 session_start();
 
-if (isset($_SESSION['USERNAME'])){
+if (isset($_SESSION['username'])){
 	
 	
 ?>
@@ -15,7 +15,7 @@ if (isset($_SESSION['USERNAME'])){
 	<link rel="stylesheet" href="login.css">
 </head>	
 	<body>
-		<h1>pending view items <?php echo $_SESSION['USERNAME'];?></h1>
+		<h1>pending view items <?php echo $_SESSION['username'];?></h1>
 	</body>
 </html>
 		
@@ -23,7 +23,7 @@ if (isset($_SESSION['USERNAME'])){
 		
 		
 <?php
-}else{
+} else{
 	header("Location: index.php");
 	exit();
 }

@@ -1,12 +1,14 @@
 <?php
 
 include "../dbcon.php";
+include "../validation.php";
+
 
 $statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity >= 2');
 $statement->execute();
 $inventory = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-
+$errors = [];
 // echo '<pre>';
 // var_dump($inventory);
 // echo '<pre>';
@@ -25,28 +27,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $existingquantity = $selected_prod['quantity'];
     $item_name = $selected_prod['item_name'];
     $item_type = $selected_prod['type'];
-    $item_price = $quantity * $selected_prod['price'];
+    // $item_price = $quantity * $selected_prod['price'];
+    $item_price = $selected_prod['price'];
+    $item_image = $selected_prod['image'];
 
-    if ($quantity < $existingquantity) {
+    if ($quantity <= $existingquantity) {
         $newquantity = $existingquantity - $quantity;
         $statement = $pdo->prepare("UPDATE tbl_inventory set quantity = :IQUAN WHERE item_id = :id");
         $statement->bindValue(':IQUAN', $newquantity);
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
-    echo $errors;
     
     if (empty($errors)) {
-        $statement = $pdo->prepare("INSERT INTO order_form (ORDER_DATE, ITEM_TYPE, ITEM_NAME, description, ORDER_QUANTITY, amount)
-        VALUES (:ORDER_DATE, :ITEM_TYPE, :ITEM_NAME, :description, :ORDER_QUANTITY, :amount)"
+        $statement = $pdo->prepare("INSERT INTO tbl_orderconfirm (item_image, item_name, item_id, item_type, amount, quantity)
+        VALUES (:item_image, :item_name, :item_id, :item_type, :amount, :quantity)"
         );
 
-        $statement->bindValue(':ORDER_DATE', $orderdate);
-        $statement->bindValue(':ITEM_TYPE', $item_type);
-        $statement->bindValue(':ITEM_NAME', $item_name);
-        $statement->bindValue(':description', '');
-        $statement->bindValue(':ORDER_QUANTITY', $quantity);
+        $statement->bindValue(':item_image', $item_image);
+        $statement->bindValue(':item_name', $item_name);
+        $statement->bindValue(':item_id', $id);
+        $statement->bindValue(':item_type', $item_type);
         $statement->bindValue(':amount', $item_price);
+        $statement->bindValue(':quantity', $quantity);
         $statement->execute();
 
         header("location:order.php");
@@ -65,7 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/index.css" />
+    <?php if ($_SESSION["Roles"] == 'admin'): ?>
     <title>Bicycle King | Admin</title>
+    <?php else: ?>
+    <title>Bicycle King | Cashier</title>
+    <?php endif;?>
   </head>
   <body>
     <div class="admin-main">
@@ -76,7 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           width="120"
           height="100"
         />
-        <h4>Welcome to Admin!</h4>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+          <h4>Welcome to Admin!</h4>
+        <?php else: ?>
+          <h4>Welcome to Cashier!</h4>
+        <?php endif;?>
       </div>
       <ul>
         <li class="disabled"><a href="order.php">Transactions</a></li>

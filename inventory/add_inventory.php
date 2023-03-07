@@ -2,12 +2,14 @@
 
 include "../dbcon.php";
 include "../randomstring.php";
+include "../validation.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $quantity = $_POST['quantity'];
     $type = $_POST['types'];
     $price = $_POST['price'];
+    $desc = $_POST['description'];
 
     if (!is_dir('./img')) {
       mkdir('./img');
@@ -23,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($image['tmp_name'], $imagePath);
         }
 
-        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image)
-        VALUES (:item_name, :type, :quantity, :price, :image)"
+        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image, description)
+        VALUES (:item_name, :type, :quantity, :price, :image, :description)"
         );
 
         $statement->bindValue(':item_name', $name);
@@ -32,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->bindValue(':quantity', $quantity);
         $statement->bindValue(':price', $price);
         $statement->bindValue(':image', $imagePath);
+        $statement->bindValue(':description', $desc);
         $statement->execute();  
 
         header("location:inventory.php");
@@ -48,7 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/index.css" />
+    <?php if ($_SESSION["Roles"] == 'admin'): ?>
     <title>Bicycle King | Admin</title>
+    <?php else: ?>
+    <title>Bicycle King | Cashier</title>
+    <?php endif;?>
   </head>
   <body>
     <div class="admin-main">
@@ -59,7 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           width="120"
           height="100"
         />
-        <h4>Welcome to Admin!</h4>
+
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+          <h4>Welcome to Admin!</h4>
+        <?php else: ?>
+          <h4>Welcome to Cashier!</h4>
+        <?php endif;?>
       </div>
       <ul>
         <li><a href="../order/order.php">Transactions</a></li>
@@ -93,11 +105,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               required
             />
         </div>
+        <div class="form-group">
+            <label for="">Description:</label>
+            <textarea
+              type="text"
+              class="form-control"
+              name="description"
+              required
+            ></textarea>
+        </div>
          <div class="form-group">
             <label for="">Types:</label>
             <select name="types">
-              <option value="Parts">Parts</option>
+              <option value="Bike">Brakes</option>
+              <option value="Bike">Tires</option>
+              <option value="Bike">Chain</option>
               <option value="Bike">Bike</option>
+              <option value="Bike">Pedal</option>
             </select>
           </div>
           <div class="form-group">

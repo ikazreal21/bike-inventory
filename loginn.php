@@ -19,14 +19,15 @@ try
             $count = $statement->rowCount();
             $user = $statement->fetchAll(PDO::FETCH_ASSOC);
             // echo '<pre>';
-            // var_dump($user[0]);
+            // var_dump($user[0]["Roles"]);
             // echo '<pre>';
 
             if ($count > 0) {
                 $_SESSION["username"] = $_POST["username"];
+                $_SESSION["Roles"] = $user[0]["Roles"];
                 header("location:./order/order.php");
             } else {
-                $message = '<label>Wrong Data or Your Account is Deactivated</label>';
+                echo "<script>alert('Invalid Username or Password'); window.location = 'index.php';</script>";
             }
         }
     }
@@ -59,7 +60,7 @@ try
         <div class="admin">
             <img src="./images/logoo.png" alt="admin" width="50"
             height="40">
-            <h1>ADMIN</h1>
+            <h1>LOGIN</h1>
         </div>
         <div class="login-form">
 			<form method="POST" action ="">

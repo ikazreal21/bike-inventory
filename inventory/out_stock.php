@@ -1,6 +1,8 @@
 <?php  
 
 include "../dbcon.php";
+include "../validation.php";
+
 
 $search = $_GET['type'] ?? '';
 
@@ -32,7 +34,11 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/index.css" />
+    <?php if ($_SESSION["Roles"] == 'admin'): ?>
     <title>Bicycle King | Admin</title>
+    <?php else: ?>
+    <title>Bicycle King | Cashier</title>
+    <?php endif;?>
   </head>
   <body>
     <div class="admin-main">
@@ -43,7 +49,11 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
           width="120"
           height="100"
         />
-        <h4>Welcome to Admin!</h4>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+          <h4>Welcome to Admin!</h4>
+        <?php else: ?>
+          <h4>Welcome to Cashier!</h4>
+        <?php endif;?>
       </div>
       <ul>
         <li><a href="../order/order.php">Transactions</a></li>
@@ -86,12 +96,8 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['type']; ?></td>
 			<td><?php echo $item['quantity']; ?></td>
 			<td><?php echo $item['price']; ?></td>
-            <?php if ($item['quantity'] < 2): ?>
-			    <td>Low on Stocks</td>
-            <?php else: ?>
-                <td>Good Stocks</td>
-            <?php endif;?>
-        </tr>
+			<td>Out on Stocks</td>
+      </tr>
         <?php endforeach;?>
         
         </table>
