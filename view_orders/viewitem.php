@@ -6,10 +6,10 @@ include "../validation.php";
 $search = $_GET['search'] ?? '';
 
 if ($search) {
-    $statement = $pdo->prepare('SELECT * FROM order_form where ITEM_NAME like :INAME ORDER BY ID desc');
+    $statement = $pdo->prepare('SELECT * FROM tbl_orders where serial_number like :INAME ORDER BY order_id desc');
     $statement->bindValue(':INAME', "%$search%");
 } else {
-    $statement = $pdo->prepare('SELECT * FROM order_form ORDER BY ID desc');
+    $statement = $pdo->prepare('SELECT * FROM tbl_orders ORDER BY order_id desc');
 }
 
 $statement->execute();
@@ -78,20 +78,20 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <table class="inventory">
         <tr>
             <th>Item No.</th>
+            <th>Serial Number</th>
             <th>Date Purchased</th>
-            <th>Item Name</th>
-            <th>Item Type</th>
-            <th>Quantity</th>
-            <th>Amount</th>
+            <th>Total Quantity</th>
+            <th>Total Amount</th>
+            <th>Inventory Id's</th>
         </tr>
 		  <?php foreach ($row as $i => $item):?>
         <tr>
-			<td><?php echo $item['ID']; ?></td>
-			<td><?php echo $item['ORDER_DATE']; ?></td>
-			<td><?php echo $item['ITEM_TYPE']; ?></td>
-			<td><?php echo $item['ITEM_NAME']; ?></td>
-			<td><?php echo $item['ORDER_QUANTITY']; ?></td>
-			<td><?php echo $item['amount']; ?></td>
+			<td><?php echo $item['order_id']; ?></td>
+			<td><?php echo $item['serial_number']; ?></td>
+			<td><?php echo $item['order_date']; ?></td>
+			<td><?php echo $item['total_quantity']; ?></td>
+			<td><?php echo $item['total_amount']; ?></td>
+			<td><?php echo $item['inventory_ids']; ?></td>
         </tr>
         <?php endforeach;?>	
         </table>

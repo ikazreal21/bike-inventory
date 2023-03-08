@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2023 at 06:14 PM
+-- Generation Time: Mar 08, 2023 at 11:13 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -99,10 +99,10 @@ CREATE TABLE `tbl_inventory` (
 
 INSERT INTO `tbl_inventory` (`item_id`, `item_name`, `type`, `quantity`, `price`, `image`, `description`) VALUES
 (1, 'Breaks', 'Parts', 0, 2000, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', ''),
-(2, 'Tsunami Frame', 'Parts', 6, 6000, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', 'Parts'),
-(3, 'Test', 'Parts', 3, 200, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', 'Parts of Bike'),
-(4, 'Test', 'Parts', 211, 2000, '../inventory/img/VJgeBdbb/936243-scary-background-images-1920x1080-ipad-retina.jpg', 'Parts'),
-(5, 'Tsunami Frame', 'Parts', 4, 4000, '../inventory/img/qgef8w24/download.jpg', 'Parts of Bike');
+(2, 'Tsunami Frame', 'Parts', 7, 6000, '../inventory/img/QvaLrYna/wp8377232-pointing-wallpapers.jpg', 'Parts'),
+(3, 'Test', 'Parts', 19, 200, '../inventory/img/hjkt4oCM/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike'),
+(4, 'Test', 'Parts', 6, 2000, '../inventory/img/NxWI1H89/unnamed.jpg', 'Parts'),
+(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike');
 
 -- --------------------------------------------------------
 
@@ -159,6 +159,29 @@ CREATE TABLE `tbl_orderconfirm` (
   `quantity` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_orders`
+--
+
+CREATE TABLE `tbl_orders` (
+  `order_id` int(50) NOT NULL,
+  `order_date` varchar(50) NOT NULL,
+  `total_quantity` int(50) NOT NULL,
+  `total_amount` int(50) NOT NULL,
+  `inventory_ids` varchar(2000) NOT NULL,
+  `serial_number` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_orders`
+--
+
+INSERT INTO `tbl_orders` (`order_id`, `order_date`, `total_quantity`, `total_amount`, `inventory_ids`, `serial_number`) VALUES
+(1, '2023-03-08', 2, 6200, '[\"3\",\"2\"]', 'LGDWO9K3'),
+(2, '2023-03-08', 8, 20400, '[\"4\",\"3\",\"2\"]', 'AMYMUVQ2');
+
 --
 -- Indexes for dumped tables
 --
@@ -194,6 +217,12 @@ ALTER TABLE `tbl_orderconfirm`
   ADD PRIMARY KEY (`cart_id`);
 
 --
+-- Indexes for table `tbl_orders`
+--
+ALTER TABLE `tbl_orders`
+  ADD PRIMARY KEY (`order_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -225,7 +254,13 @@ ALTER TABLE `tbl_login`
 -- AUTO_INCREMENT for table `tbl_orderconfirm`
 --
 ALTER TABLE `tbl_orderconfirm`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `tbl_orders`
+--
+ALTER TABLE `tbl_orders`
+  MODIFY `order_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

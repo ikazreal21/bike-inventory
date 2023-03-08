@@ -16,9 +16,8 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['items'];
     $quantity = $_POST['quantity'];
-    $orderdate = date("Y-m-d");
-    $existingquantity = '';
-    $newquantity = '';
+    $existingquantity = 0;
+    $newquantity = 0;
 
     $statement = $pdo->prepare('SELECT * FROM tbl_inventory WHERE item_id = :id');
     $statement->bindValue(':id', $id);
@@ -37,9 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->bindValue(':IQUAN', $newquantity);
         $statement->bindValue(':id', $id);
         $statement->execute();
-    }
-    
-    if (empty($errors)) {
+
         $statement = $pdo->prepare("INSERT INTO tbl_orderconfirm (item_image, item_name, item_id, item_type, amount, quantity)
         VALUES (:item_image, :item_name, :item_id, :item_type, :amount, :quantity)"
         );
@@ -53,10 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->execute();
 
         header("location:order.php");
+    } else {
+      echo "<script>alert('Exceed Stock'); window.location = 'order.php';</script>";
     }
-}
 
-
+  }
+  
 
 ?>
 
@@ -100,8 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="navbar">
         <li><a class="disabled" href="order.php">Order</a></li>
         <li><a href="order_confirm.php">Confirm Order</a></li>
-        <li><a href="#">Order Summary</a></li>
-        <li><a href="#">Reciept</a></li>
+        <li><a href="order_process.php">Order Summary</a></li>
       </div>
       <div class="tran-form-card">
         <?php foreach ($inventory as $i => $item): ?>

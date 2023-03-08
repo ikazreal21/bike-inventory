@@ -40,15 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image = $_FILES['image'];
         $imagePath = $item_detail['image'];
 
-        if ($item_detail['image']) {
-          unlink($item_detail['image']);
+        
+
+        if (!empty($image) && !empty($image['tmp_name'])) {
+          if ($item_detail['image']) {
+            unlink($item_detail['image']);
+          }
+
+          $imagePath = '../inventory/img/'.randomString(8, 1).'/'.$image['name'];
+          mkdir(dirname($imagePath));
+          move_uploaded_file($image['tmp_name'], $imagePath);
         }
 
-        if ($image && $image['tmp_name']) {
-            $imagePath = '../inventory/img/'.randomString(8, 1).'/'.$image['name'];
-            mkdir(dirname($imagePath));
-            move_uploaded_file($image['tmp_name'], $imagePath);
-        }
 
         $statement = $pdo->prepare("UPDATE tbl_inventory set item_name = :item_name, type = :type, quantity = :quantity, price = :price, image = :image, description = :description where item_id = :id");
 

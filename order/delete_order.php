@@ -34,7 +34,7 @@ $statement->execute();
 $prod = $statement->fetch(PDO::FETCH_ASSOC);
 $quantity = $prod["quantity"];
 
-$updatequantity = '';
+$updatequantity = 0;
 $updatequantity = $quantity2 + $quantity;
 
 
