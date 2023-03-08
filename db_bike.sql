@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2023 at 11:13 AM
+-- Generation Time: Mar 08, 2023 at 05:27 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -102,7 +102,8 @@ INSERT INTO `tbl_inventory` (`item_id`, `item_name`, `type`, `quantity`, `price`
 (2, 'Tsunami Frame', 'Parts', 7, 6000, '../inventory/img/QvaLrYna/wp8377232-pointing-wallpapers.jpg', 'Parts'),
 (3, 'Test', 'Parts', 19, 200, '../inventory/img/hjkt4oCM/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike'),
 (4, 'Test', 'Parts', 6, 2000, '../inventory/img/NxWI1H89/unnamed.jpg', 'Parts'),
-(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike');
+(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike'),
+(6, 'TEST', 'Bike', 2, 100, '../inventory/img/Guoe6Fqm/wp8377232-pointing-wallpapers.jpg', 'Test');
 
 -- --------------------------------------------------------
 
@@ -141,7 +142,8 @@ CREATE TABLE `tbl_login` (
 --
 
 INSERT INTO `tbl_login` (`User_id`, `USERNAME`, `PASSWORD`, `Roles`) VALUES
-(1, 'admin', 'admin123', 'admin');
+(1, 'admin', 'admin123', 'admin'),
+(2, 'cashier', 'cashier123', 'cashier');
 
 -- --------------------------------------------------------
 
@@ -236,7 +238,7 @@ ALTER TABLE `order_form`
 -- AUTO_INCREMENT for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_itemtype`
@@ -248,7 +250,7 @@ ALTER TABLE `tbl_itemtype`
 -- AUTO_INCREMENT for table `tbl_login`
 --
 ALTER TABLE `tbl_login`
-  MODIFY `User_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `User_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_orderconfirm`

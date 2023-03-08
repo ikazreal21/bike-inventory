@@ -117,11 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          <div class="form-group">
             <label for="">Types:</label>
             <select name="types">
-              <option value="Bike">Brakes</option>
-              <option value="Bike">Tires</option>
-              <option value="Bike">Chain</option>
+              <option value="Brakes">Brakes</option>
+              <option value="Tires">Tires</option>
+              <option value="Chain">Chain</option>
               <option value="Bike">Bike</option>
-              <option value="Bike">Pedal</option>
+              <option value="Pedal">Pedal</option>
+              <option value="Parts">Parts</option>
             </select>
           </div>
           <div class="form-group">

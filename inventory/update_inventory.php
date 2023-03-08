@@ -146,8 +146,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="">Types:</label>
             <select name="types">
               <option selected><?php echo $type; ?></option>
-              <option value="Parts">Parts</option>
+              <option value="Brakes">Brakes</option>
+              <option value="Tires">Tires</option>
+              <option value="Chain">Chain</option>
               <option value="Bike">Bike</option>
+              <option value="Pedal">Pedal</option>
+              <option value="Parts">Parts</option>
             </select>
           </div>
           <div class="form-group">
