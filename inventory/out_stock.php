@@ -65,7 +65,9 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div class="admin-contents">
       <div class="navbar">
         <li><a href="inventory.php">View Items</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
         <li><a href="add_inventory.php">Add Items</a></li>
+        <?php endif;?>
         <li class="disabled"><a href="#contact">Out of Stock</a></li>
       </div>
       <div class="admin-tables">

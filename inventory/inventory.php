@@ -63,7 +63,9 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div class="admin-contents">
       <div class="navbar">
         <li class="disabled"><a href="">View Items</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
         <li><a href="add_inventory.php">Add Items</a></li>
+        <?php endif;?>
         <li><a href="out_stock.php">Out of Stock</a></li>
       </div>
       <div class="admin-tables">
@@ -88,7 +90,9 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <th>Description</th>
             <th>Price</th>
             <th>Stock Status</th>
+            <?php if ($_SESSION["Roles"] == 'admin'): ?>
             <th>Action</th>
+            <?php endif;?>
         </tr>
           <?php foreach ($row as $i => $item):?>
         <tr>
@@ -108,6 +112,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>
           <td>Good Stocks</td>
             <?php endif;?>
+      <?php if ($_SESSION["Roles"] == 'admin'): ?>
       <td>
         <a href="update_inventory.php?id=<?php echo $item['item_id']; ?>">EDIT</a>
         <form method="POST" action="delete_inventory.php">
@@ -115,6 +120,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
          <button type="submit">DELETE</button>
         </form>
       </td>
+      <?php endif;?>
       </tr>
         <?php endforeach;?>
         </table>
