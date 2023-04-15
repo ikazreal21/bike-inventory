@@ -99,7 +99,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['type']; ?></td>
 			<td><?php echo $item['quantity']; ?></td>
 			<td><?php echo $item['price']; ?></td>
-			<td>Out on Stocks</td>
+			<td style="color:red;">Out on Stocks</td>
       </tr>
         <?php endforeach;?>
         
