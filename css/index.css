@@ -306,6 +306,13 @@ body {
     font-size: 9px;
 }
 
+
+.tran-form-card img {
+    max-width: 300px;
+    max-height: 200px;
+    min-width: 200px;
+    min-height: 200px;
+}
 /* .tran-form .container {
     padding: 2px 16px;
 } */

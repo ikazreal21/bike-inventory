@@ -25,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($image['tmp_name'], $imagePath);
         }
 
-        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image, description)
-        VALUES (:item_name, :type, :quantity, :price, :image, :description)"
+        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image, description, status)
+        VALUES (:item_name, :type, :quantity, :price, :image, :description, :status)"
         );
 
         $statement->bindValue(':item_name', $name);
@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->bindValue(':price', $price);
         $statement->bindValue(':image', $imagePath);
         $statement->bindValue(':description', $desc);
+        $statement->bindValue(':status', "active");
         $statement->execute();  
 
         header("location:inventory.php");
@@ -85,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="inventory.php">View Items</a></li>
         <li class="disabled"><a href="">Add Items</a></li>
         <li><a href="out_stock.php">Out of Stock</a></li>
+        <li><a href="archive_items.php">Archive Items</a></li>
       </div>
       <div class="tran-form">
         <form method="POST" action="" enctype="multipart/form-data">

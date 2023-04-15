@@ -7,10 +7,10 @@ include "../validation.php";
 $search = $_GET['type'] ?? '';
 
 if ($search) {
-    $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity != 0 order by item_id desc');
+    $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity != 0 and status = "active" order by item_id desc');
     $statement->bindValue(':INAME', "%$search%");
 } else {
-    $statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity != 0 order by item_id desc');
+    $statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity != 0 and status = "active" order by item_id desc');
 }
 
 $statement->execute();
@@ -67,6 +67,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <li><a href="add_inventory.php">Add Items</a></li>
         <?php endif;?>
         <li><a href="out_stock.php">Out of Stock</a></li>
+        <li><a href="archive_items.php">Archive Items</a></li>
       </div>
       <div class="admin-tables">
         <div class="admin-select">
@@ -106,18 +107,18 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['description']; ?></td>
 			<td><?php echo $item['price']; ?></td>
             <?php if ($item['quantity'] == 0): ?>
-			    <td>Out of Stocks</td>
+			    <td style="color:red;">Out of Stocks</td>
             <?php elseif ($item['quantity'] <= 3): ?>
-          <td>Critical on Stocks</td>
+          <td style="color:orange;">Critical on Stocks</td>
             <?php else: ?>
-          <td>Good Stocks</td>
+          <td  style="color:green;">Good Stocks</td>
             <?php endif;?>
       <?php if ($_SESSION["Roles"] == 'admin'): ?>
       <td>
         <a href="update_inventory.php?id=<?php echo $item['item_id']; ?>">EDIT</a>
-        <form method="POST" action="delete_inventory.php">
+        <form method="POST" action="archive_inventory.php">
          <input type="hidden" name="id" value="<?php echo $item['item_id']; ?>">
-         <button type="submit">DELETE</button>
+         <button type="submit">Archive</button>
         </form>
       </td>
       <?php endif;?>

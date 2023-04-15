@@ -14,7 +14,7 @@ if (!$id) {
 }
 
 
-$statement = $pdo->prepare('DELETE FROM tbl_inventory where item_id = :id');
+$statement = $pdo->prepare('UPDATE tbl_inventory set status = "active" where item_id = :id');
 $statement->bindValue(':id', $id);
 $statement->execute();
 

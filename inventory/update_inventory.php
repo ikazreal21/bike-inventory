@@ -111,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="inventory.php">View Items</a></li>
         <li class="disabled"><a href="">Add Items</a></li>
         <li><a href="out_stock.php">Out of Stock</a></li>
+        <li><a href="archive_items.php">Archive Items</a></li>
       </div>
       <div class="tran-form">
         <form method="POST" action="" enctype="multipart/form-data">

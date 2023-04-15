@@ -7,10 +7,10 @@ include "../validation.php";
 $search = $_GET['type'] ?? '';
 
 if ($search) {
-  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity = 0  status = "active" order by item_id desc');
+  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity != 0 and status = "archive" order by item_id desc');
   $statement->bindValue(':INAME', "%$search%");
 } else {
-  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity = 0 and status = "active" order by item_id desc');
+  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity != 0 and status = "archive" order by item_id desc');
 }
 
 $statement->execute();
@@ -68,8 +68,8 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <?php if ($_SESSION["Roles"] == 'admin'): ?>
         <li><a href="add_inventory.php">Add Items</a></li>
         <?php endif;?>
-        <li class="disabled"><a href="#contact">Out of Stock</a></li>
-        <li><a href="archive_items.php">Archive Items</a></li>
+        <li><a href="out_stock.php">Out of Stock</a></li>
+        <li class="disabled"><a href="archive_items.php">Archive Items</a></li>
       </div>
       <div class="admin-tables">
         <div class="admin-select">
@@ -90,7 +90,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <th>Type</th>
             <th>Quantity</th>
             <th>Price</th>
-            <th>Stock Status</th>
+            <th>Action</th>
         </tr>
           <?php foreach ($row as $i => $item):?>
         <tr>
@@ -99,7 +99,12 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['type']; ?></td>
 			<td><?php echo $item['quantity']; ?></td>
 			<td><?php echo $item['price']; ?></td>
-			<td>Out on Stocks</td>
+			<td>
+        <form method="POST" action="activate_inventory.php">
+         <input type="hidden" name="id" value="<?php echo $item['item_id']; ?>">
+         <button type="submit">Activate</button>
+        </form>
+      </td>
       </tr>
         <?php endforeach;?>
         
