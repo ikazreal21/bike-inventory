@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2023 at 05:27 PM
+-- Generation Time: Apr 15, 2023 at 06:22 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -90,20 +90,23 @@ CREATE TABLE `tbl_inventory` (
   `quantity` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL
+  `description` varchar(255) NOT NULL,
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_inventory`
 --
 
-INSERT INTO `tbl_inventory` (`item_id`, `item_name`, `type`, `quantity`, `price`, `image`, `description`) VALUES
-(1, 'Breaks', 'Parts', 0, 2000, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', ''),
-(2, 'Tsunami Frame', 'Parts', 7, 6000, '../inventory/img/QvaLrYna/wp8377232-pointing-wallpapers.jpg', 'Parts'),
-(3, 'Test', 'Parts', 19, 200, '../inventory/img/hjkt4oCM/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike'),
-(4, 'Test', 'Parts', 6, 2000, '../inventory/img/NxWI1H89/unnamed.jpg', 'Parts'),
-(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike'),
-(6, 'TEST', 'Bike', 2, 100, '../inventory/img/Guoe6Fqm/wp8377232-pointing-wallpapers.jpg', 'Test');
+INSERT INTO `tbl_inventory` (`item_id`, `item_name`, `type`, `quantity`, `price`, `image`, `description`, `status`) VALUES
+(1, 'Breaks', 'Parts', 0, 2000, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', '', 'active'),
+(2, 'Tsunami Frame', 'Parts', 7, 6000, '../inventory/img/QvaLrYna/wp8377232-pointing-wallpapers.jpg', 'Parts', 'active'),
+(3, 'Test', 'Parts', 19, 200, '../inventory/img/hjkt4oCM/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike', 'active'),
+(4, 'Test', 'Parts', 6, 2000, '../inventory/img/NxWI1H89/unnamed.jpg', 'Parts', 'active'),
+(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike', 'active'),
+(6, 'TEST', 'Bike', 2, 100, '../inventory/img/Guoe6Fqm/wp8377232-pointing-wallpapers.jpg', 'Test', 'active'),
+(7, 'Tsunami Frame', 'Bike', 4, 111, '../inventory/img/anBT5qQn/IMG_0072.JPG', 'a', ''),
+(8, 'Tsunami Frame', 'Bike', 4, 1111, '../inventory/img/exgdVGWe/IMG_0072.JPG', '1', 'active');
 
 -- --------------------------------------------------------
 
@@ -238,7 +241,7 @@ ALTER TABLE `order_form`
 -- AUTO_INCREMENT for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_itemtype`
