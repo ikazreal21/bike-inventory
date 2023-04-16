@@ -87,6 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li class="disabled"><a href="transact.php">Transactions</a></li>
         <li><a href="../inventory/inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+        <li><a href="../add_type/type.php">View Type</a></li>
+        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
@@ -104,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div style="display: flex; justify-content: space-between;">
                 <p style="background-color: papayawhip;"><?php echo $item['item_name']; ?></p>
                 <p style="background-color: palegoldenrod;">x<?php echo $item['quantity']; ?></p>
-                <p style="background-color: palegoldenrod;">Amount: <?php echo $item['amount']; ?></p>
+                <p style="background-color: palegoldenrod;">Amount: ₱ <?php echo number_format($item['amount'],  2, '.', ','); ?></p>
             </div>
         <?php endforeach;?>
         <h5>Total Quantity:  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; <?php echo $total_quantity; ?></h5>

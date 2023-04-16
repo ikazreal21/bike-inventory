@@ -6,6 +6,10 @@ include "../validation.php";
 
 $search = $_GET['type'] ?? '';
 
+$statement = $pdo->prepare('SELECT * FROM tbl_itemtype order by itemtype_id desc');
+$statement->execute();
+$types = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 if ($search) {
   $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity != 0 and status = "archive" order by item_id desc');
   $statement->bindValue(':INAME', "%$search%");
@@ -59,6 +63,10 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <li><a href="../order/order.php">Transactions</a></li>
         <li class="disabled" ><a href="inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+        <li><a href="../add_type/type.php">View Type</a></li>
+        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
@@ -74,10 +82,11 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
       <div class="admin-tables">
         <div class="admin-select">
           <form method="get" action="">
-            <select name="type">
-              <option selected value="">Select Type</option>
-              <option value="Parts">Parts</option>
-              <option value="Bike">Bike</option>
+          <select name="type">
+            <option selected value="">Select Type</option>
+            <?php foreach ($types as $i => $item):?>
+              <option value="<?php echo $item['item_type']; ?>"><?php echo $item['item_type']; ?></option>
+              <?php endforeach;?>
             </select>
             <input type="submit" value="Submit" />
           </form>
@@ -88,6 +97,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <th>Item Code</th>
             <th>Name of Item</th>
             <th>Type</th>
+            <th>Brand</th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Action</th>
@@ -97,8 +107,9 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['item_id']; ?></td>
 			<td><?php echo $item['item_name']; ?></td>
 			<td><?php echo $item['type']; ?></td>
+			<td><?php echo $item['brand']; ?></td>
 			<td><?php echo $item['quantity']; ?></td>
-			<td><?php echo $item['price']; ?></td>
+			<td>₱ <?php echo number_format($item['price'],  2, '.', ','); ?></td>
 			<td>
         <form method="POST" action="activate_inventory.php">
          <input type="hidden" name="id" value="<?php echo $item['item_id']; ?>">

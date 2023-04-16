@@ -6,6 +6,11 @@ include "../validation.php";
 
 $search = $_GET['type'] ?? '';
 
+$statement = $pdo->prepare('SELECT * FROM tbl_itemtype order by itemtype_id desc');
+$statement->execute();
+$types = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
 if ($search) {
     $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity != 0 and status = "active" order by item_id desc');
     $statement->bindValue(':INAME', "%$search%");
@@ -57,6 +62,10 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <li><a href="../order/order.php">Transactions</a></li>
         <li class="disabled" ><a href="inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+        <li><a href="../add_type/type.php">View Type</a></li>
+        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
@@ -73,9 +82,10 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
         <div class="admin-select">
           <form method="get" action="">
             <select name="type">
-              <option selected value="">Select Type</option>
-              <option value="Parts">Parts</option>
-              <option value="Bike">Bike</option>
+            <option selected value="">Select Type</option>
+            <?php foreach ($types as $i => $item):?>
+              <option value="<?php echo $item['item_type']; ?>"><?php echo $item['item_type']; ?></option>
+              <?php endforeach;?>
             </select>
             <input type="submit" value="Submit" />
           </form>
@@ -87,6 +97,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <th>Item Image</th>
             <th>Name of Item</th>
             <th>Type</th>
+            <th>Brand</th>
             <th>Quantity</th>
             <th>Description</th>
             <th>Price</th>
@@ -103,19 +114,18 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
       </td>
 			<td><?php echo $item['item_name']; ?></td>
 			<td><?php echo $item['type']; ?></td>
+			<td><?php echo $item['brand']; ?></td>
       <td><?php echo $item['quantity']; ?></td>
 			<td><?php echo $item['description']; ?></td>
-			<td><?php echo $item['price']; ?></td>
-            <?php if ($item['quantity'] == 0): ?>
-			    <td style="color:red;">Out of Stocks</td>
-            <?php elseif ($item['quantity'] <= 3): ?>
-          <td style="color:orange;">Critical on Stocks</td>
-            <?php else: ?>
-          <td  style="color:green;">Good Stocks</td>
-            <?php endif;?>
+			<td>₱ <?php echo number_format($item['price'],  2, '.', ','); ?></td>
+          <?php if ($item['quantity'] <= 3): ?>
+        <td style="color:orange;">Critical on Stock</td>
+          <?php else: ?>
+        <td  style="color:green;">Good Stock</td>
+          <?php endif;?>
       <?php if ($_SESSION["Roles"] == 'admin'): ?>
       <td>
-        <a href="update_inventory.php?id=<?php echo $item['item_id']; ?>">EDIT</a>
+        <a href="update_inventory.php?id=<?php echo $item['item_id']; ?>">Edit</a>
         <form method="POST" action="archive_inventory.php">
          <input type="hidden" name="id" value="<?php echo $item['item_id']; ?>">
          <button type="submit">Archive</button>

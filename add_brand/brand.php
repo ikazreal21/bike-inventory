@@ -1,23 +1,18 @@
-<?php
+<?php  
 
 include "../dbcon.php";
 include "../validation.php";
 
-$search = $_GET['search'] ?? '';
 
-if ($search) {
-    $statement = $pdo->prepare('SELECT * FROM tbl_orders where serial_number like :INAME ORDER BY order_id desc');
-    $statement->bindValue(':INAME', "%$search%");
-} else {
-    $statement = $pdo->prepare('SELECT * FROM tbl_orders ORDER BY order_id desc');
-}
-
+$statement = $pdo->prepare('SELECT * FROM tbl_brand order by brand_id desc');
 $statement->execute();
 $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 // echo '<pre>';
-// var_dump($row);
+// var_dump($date);
 // echo '<pre>';
+
+
 
 ?>
 
@@ -52,52 +47,42 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
       <ul>
         <li><a href="../order/order.php">Transactions</a></li>
         <li><a href="../inventory/inventory.php">Inventory</a></li>
-        <li class="disabled" ><a href="">View Records</a></li>
+        <li><a href="../view_orders/viewitem.php">View Records</a></li>
         <?php if ($_SESSION["Roles"] == 'admin'): ?>
         <li><a href="../add_type/type.php">View Type</a></li>
-        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <li class="disabled" ><a href="">View Brand</a></li>
         <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
     <div class="admin-contents">
       <div class="navbar">
-        <!-- <li><a href="#home">Home</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="#contact">Contact</a></li> -->
-
+        <li class="disabled"><a href="">View Brand</a></li>
+        <li><a href="add_brand.php">Add Brand</a></li>
       </div>
       <div class="admin-tables">
-        <div class="admin-select">
-          <form action="" method="get">
-		  	<input type="text" 
-			class="form-control" 
-			name="search" 
-			placeholder="Enter Search" 
-			value="<?php echo $search; ?>">
-            <input type="submit" value="Submit" />
-          </form>
-        </div>
-
         <table class="inventory">
         <tr>
-            <th>Item No.</th>
-            <th>Transaction Number</th>
-            <th>Date Purchased</th>
-            <th>Total Quantity</th>
-            <th>Total Amount</th>
-            <th>Inventory Id's</th>
+            <th>Brand ID</th>
+            <th>Brand</th>
+            <?php if ($_SESSION["Roles"] == 'admin'): ?>
+            <th>Action</th>
+            <?php endif;?>
         </tr>
-		  <?php foreach ($row as $i => $item):?>
+          <?php foreach ($row as $i => $item):?>
         <tr>
-			<td><?php echo $item['order_id']; ?></td>
-			<td><?php echo $item['serial_number']; ?></td>
-			<td><?php echo $item['order_date']; ?></td>
-			<td><?php echo $item['total_quantity']; ?></td>
-			<td>₱ <?php echo number_format($item['total_amount'],  2, '.', ','); ?></td>
-			<td><?php echo $item['inventory_ids']; ?></td>
-        </tr>
-        <?php endforeach;?>	
+			<td><?php echo $item['brand_id']; ?></td>
+			<td><?php echo $item['brand_name']; ?></td>
+      <?php if ($_SESSION["Roles"] == 'admin'): ?>
+      <td>
+        <form method="POST" action="delete_brand.php">
+         <input type="hidden" name="id" value="<?php echo $item['brand_id']; ?>">
+         <button type="submit">Delete</button>
+        </form>
+      </td>
+      <?php endif;?>
+      </tr>
+        <?php endforeach;?>
         </table>
       </div>
     </div>

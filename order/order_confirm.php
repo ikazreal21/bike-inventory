@@ -111,6 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <li class="disabled"><a href="transact.php">Transactions</a></li>
         <li><a href="../inventory/inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+        <li><a href="../add_type/type.php">View Type</a></li>
+        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
@@ -144,6 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form method="POST" action="">
                 <input
                 type="number"
+                min="0"
                 class="form-control"
                 name="quantity"
                 required
@@ -152,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit">UPDATE</button>
             </form>  
           </td>
-          <td><?php echo $item['amount']; ?></td>
+          <td>₱ <?php echo number_format($item['amount'],  2, '.', ','); ?></td>
           <td>
             <form method="POST" action="delete_order.php">
               <input type="hidden" name="id" value="<?php echo $item['cart_id']; ?>">
@@ -167,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <th></th>
             <th></th>
             <th>Total:</th>
-            <th><?php echo $total_amount; ?></th>
+            <th>₱ <?php echo number_format($total_amount,  2, '.', ','); ?></th>
         </tr>
         </table>
       </div>

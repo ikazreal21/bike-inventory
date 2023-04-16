@@ -85,9 +85,9 @@ body {
 
 /* Change the link color on hover */
 .admin-main li a:hover {
-    background-color: #BDD6EF;
+    background-color: rgb(248, 195, 160);
     border-radius: 2px;
-    color: white;
+    color: black;
 }
 
 .admin-main .admin-image {
@@ -126,9 +126,9 @@ body {
 
 /* Change the link color on hover */
 .admin-contents li a:hover {
-    background-color: #BDD6EF;
+    background-color: rgb(248, 195, 160);
     border-radius: 2px;
-    color: white;
+    color: black;
 }
 
 .admin-contents .navbar {
@@ -143,6 +143,30 @@ body {
     margin: auto;
 }
 
+.admin-tables .btn {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 150px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+.admin-tables button {
+    width: 70px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+.admin-tables a {
+    font-weight: bold;
+    text-decoration: underline;
+    color: black;
+}
+
 .admin-select input {
     width: 110px;
     list-style-type: none;
@@ -153,21 +177,28 @@ body {
     background-color: rgb(248, 195, 160);
 }
 
+.admin-select input[type="text"] {
+    width: 200px;
+    padding: 0.2rem;
+}
+
+
 .admin-select select {
     width: 130px;
     text-align: center;
     margin: 1rem;
     padding: 8px;
     border: 2px solid black;
+    border-radius: 4px;
     background-color: rgb(248, 195, 160);
 }
 
 /* Change the link color on hover */
 .admin-select input:hover,
 .admin-select select:hover {
-    background-color: #BDD6EF;
+    background-color: rgb(248, 195, 160);
     border-radius: 2px;
-    color: white;
+    color: black;
 }
 
 
@@ -203,6 +234,69 @@ body {
 
 .tran-form-card .form-card{
     text-align: center;
+}
+
+
+.add-form {
+    width: 80%;
+    margin: auto;
+}
+
+.add-form form {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    align-items: center;
+}
+
+.add-form form select,
+.add-form form input,
+.add-form form textarea {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+.add-form .btn {
+    width: 100px;
+}
+
+
+.filter {
+    width: 80%;
+    margin: auto;
+    display: flex;
+}
+
+.admin-filter select, 
+.admin-filter input{
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+}
+
+.admin-filter input[type="submit"] {
+    width: 100px;
+}
+.admin-filter a {
+    text-decoration: none;
+    padding: 0.4rem;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(248, 195, 160);
+    font-weight: bold;
+    color: black;
 }
 
 .tran-form {

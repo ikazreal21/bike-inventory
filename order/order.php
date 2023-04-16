@@ -3,8 +3,34 @@
 include "../dbcon.php";
 include "../validation.php";
 
+$search = $_GET['search'] ?? '';
+$type = $_GET['type'] ?? '';
+$brand = $_GET['brand'] ?? '';
 
-$statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity >= 2');
+$statement = $pdo->prepare('SELECT * FROM tbl_itemtype order by itemtype_id desc');
+$statement->execute();
+$types = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement = $pdo->prepare('SELECT * FROM tbl_brand order by brand_id desc');
+$statement->execute();
+$brands = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+if ($search) {
+  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where item_name like :INAME or description like :INAME and quantity >= 2 and status = "active" order by item_id desc');
+  $statement->bindValue(':INAME', "%$search%");
+  $search = "";
+} elseif ($type) {
+  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where type like :INAME and quantity >= 2 and status = "active" order by item_id desc');
+  $statement->bindValue(':INAME', "%$type%");
+} elseif ($brand) {
+  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where brand like :INAME and quantity >= 2 and status = "active" order by item_id desc');
+  $statement->bindValue(':INAME', "%$brand%");
+}
+else {
+  $statement = $pdo->prepare('SELECT * FROM tbl_inventory where quantity != 0 and status = "active" order by item_id desc');
+}
+
 $statement->execute();
 $inventory = $statement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -92,6 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li class="disabled"><a href="order.php">Transactions</a></li>
         <li><a href="../inventory/inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+        <li><a href="../add_type/type.php">View Type</a></li>
+        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
@@ -101,6 +131,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="order_confirm.php">Confirm Order</a></li>
         <li><a href="order_process.php">Order Summary</a></li>
       </div>
+      <div class="filter">
+      <div class="admin-filter">
+        <form action="" method="get">
+		  	<input type="text" 
+        class="form-control" 
+        name="search" 
+        placeholder="Enter Search" 
+        value="<?php echo $search; ?>">
+        <input type="submit" value="Submit" />
+        </form>
+      </div>
+      <div class="admin-filter">
+          <form method="get" action="">
+            <select name="type">
+            <option selected value="">Select Type</option>
+            <?php foreach ($types as $i => $item):?>
+              <option value="<?php echo $item['item_type']; ?>"><?php echo $item['item_type']; ?></option>
+              <?php endforeach;?>
+            </select>
+            <input type="submit" value="Submit" />
+          </form>
+      </div>
+      <div class="admin-filter">
+          <form method="get" action="">
+            <select name="brand">
+            <option selected value="">Select Type</option>
+            <?php foreach ($brands as $i => $item):?>
+              <option value="<?php echo $item['brand_name']; ?>"><?php echo $item['brand_name']; ?></option>
+              <?php endforeach;?>
+            </select>
+            <input type="submit" value="Submit" />
+            <a href="order.php">Clear</a>
+          </form>
+      </div>
+      </div>
       <div class="tran-form-card">
         <?php foreach ($inventory as $i => $item): ?>
         <div class="flex-wrapper">
@@ -108,18 +173,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="card">
               <img src="<?php echo $item['image']; ?>" alt="item image" style="width:100%;">
               <div class="container">
-                <h4><b><?php echo $item['item_name']; ?></b></h4>
-                <h4><b>₱<?php echo $item['price']; ?></b></h4>
-                <p><?php echo $item['type']; ?></p>
+                <h4><u><b><?php echo $item['brand']; ?></b></u> - <b><?php echo $item['item_name']; ?></b></h4>
+                <h4><b>₱ <?php echo number_format($item['price'],  2, '.', ','); ?></b></h4>
+                <p><u><b><?php echo $item['type']; ?></b></u></p>
+                <p><?php echo $item['description']; ?></p>
                 <input type="text" name="items" value="<?php echo $item['item_id']; ?>" hidden/>
-                <input type="number" class="form-control" name="quantity" placeholder="Quantity" required />
+                <input type="number" min="0" class="form-control" name="quantity" placeholder="Quantity" required />
                 <input type="submit" class="btn" value="Add Order" />
               </div>
             </div>
-            <!-- <div class="buttons-form"> -->
-              <!-- <input type="submit" class="btn" value="Delete Item" /> -->
-              <!-- <input type="reset" class="btn" value="Cancel" /> -->
-              <!-- </div> -->
           </form>
         </div>
         <?php endforeach;?>

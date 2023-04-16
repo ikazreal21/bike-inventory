@@ -4,12 +4,22 @@ include "../dbcon.php";
 include "../randomstring.php";
 include "../validation.php";
 
+
+$statement = $pdo->prepare('SELECT * FROM tbl_itemtype order by itemtype_id desc');
+$statement->execute();
+$types = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement = $pdo->prepare('SELECT * FROM tbl_brand order by brand_id desc');
+$statement->execute();
+$brand = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $quantity = $_POST['quantity'];
     $type = $_POST['types'];
     $price = $_POST['price'];
     $desc = $_POST['description'];
+    $brand = $_POST['brand'];
 
     if (!is_dir('./img')) {
       mkdir('./img');
@@ -25,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($image['tmp_name'], $imagePath);
         }
 
-        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image, description, status)
-        VALUES (:item_name, :type, :quantity, :price, :image, :description, :status)"
+        $statement = $pdo->prepare("INSERT INTO tbl_inventory (item_name, type, quantity, price, image, description, status, brand)
+        VALUES (:item_name, :type, :quantity, :price, :image, :description, :status, :brand)"
         );
 
         $statement->bindValue(':item_name', $name);
@@ -36,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->bindValue(':image', $imagePath);
         $statement->bindValue(':description', $desc);
         $statement->bindValue(':status', "active");
-        $statement->execute();  
+        $statement->bindValue(':brand', $brand);
+        $statement->execute();
 
         header("location:inventory.php");
     }
@@ -78,6 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="../order/order.php">Transactions</a></li>
         <li class="disabled" ><a href="../inventory/inventory.php">Inventory</a></li>
         <li><a href="../view_orders/viewitem.php">View Records</a></li>
+        <?php if ($_SESSION["Roles"] == 'admin'): ?>
+        <li><a href="../add_type/type.php">View Type</a></li>
+        <li><a href="../add_brand/brand.php">View Brand</a></li>
+        <?php endif;?>
         <li class="logout"><a href="../logout.php">Logout</a></li>
       </ul>
     </div>
@@ -88,17 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="out_stock.php">Out of Stock</a></li>
         <li><a href="archive_items.php">Archive Items</a></li>
       </div>
-      <div class="tran-form">
+      <div class="add-form">
         <form method="POST" action="" enctype="multipart/form-data">
-        <div class="form-group">
-            <label class="form-label">Product Img</label>
+            <label class="form-label">Product Image</label>
             <input
               type="file"
               class="form-control"
               name="image"
             />
-        </div>
-        <div class="form-group">
             <label for="">Items Name:</label>
             <input
               type="text"
@@ -106,8 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               name="name"
               required
             />
-        </div>
-        <div class="form-group">
             <label for="">Description:</label>
             <textarea
               type="text"
@@ -115,38 +125,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               name="description"
               required
             ></textarea>
-        </div>
-         <div class="form-group">
             <label for="">Types:</label>
-            <select name="types">
-              <option value="Brakes">Brakes</option>
-              <option value="Tires">Tires</option>
-              <option value="Chain">Chain</option>
-              <option value="Bike">Bike</option>
-              <option value="Pedal">Pedal</option>
-              <option value="Parts">Parts</option>
+            <select name="types" required>
+            <?php foreach ($types as $i => $item):?>
+              <option value="<?php echo $item['item_type']; ?>"><?php echo $item['item_type']; ?></option>
+              <?php endforeach;?>
             </select>
-          </div>
-          <div class="form-group">
+            <label for="">Brands:</label>
+            <select name="brand" required>
+            <?php foreach ($brand as $i => $item):?>
+              <option value="<?php echo $item['brand_name']; ?>"><?php echo $item['brand_name']; ?></option>
+              <?php endforeach;?>
+            </select>
             <label for="">Quantity:</label>
             <input
               type="number"
+              min="0"
               class="form-control"
               name="quantity"
               required
             />
-          </div>
-          
-          <div class="form-group">
             <label for="">Price:</label>
             <input
               type="number"
+              min="0"
               class="form-control"
               name="price"
               required
             />
-          </div>
-
           <div class="buttons-form">
             <input type="submit" class="btn" value="Add Item" />
             <!-- <input type="submit" class="btn" value="Delete Item" /> -->
