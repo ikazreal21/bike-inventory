@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2023 at 06:22 PM
+-- Generation Time: Apr 16, 2023 at 04:28 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -80,6 +80,26 @@ INSERT INTO `order_form` (`ID`, `ORDER_DATE`, `ITEM_TYPE`, `ITEM_NAME`, `descrip
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_brand`
+--
+
+CREATE TABLE `tbl_brand` (
+  `brand_id` int(50) NOT NULL,
+  `brand_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_brand`
+--
+
+INSERT INTO `tbl_brand` (`brand_id`, `brand_name`) VALUES
+(1, 'Shimano'),
+(2, 'The Project'),
+(4, 'Celt');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_inventory`
 --
 
@@ -91,22 +111,25 @@ CREATE TABLE `tbl_inventory` (
   `price` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `status` varchar(50) NOT NULL
+  `status` varchar(50) NOT NULL,
+  `brand` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_inventory`
 --
 
-INSERT INTO `tbl_inventory` (`item_id`, `item_name`, `type`, `quantity`, `price`, `image`, `description`, `status`) VALUES
-(1, 'Breaks', 'Parts', 0, 2000, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', '', 'active'),
-(2, 'Tsunami Frame', 'Parts', 7, 6000, '../inventory/img/QvaLrYna/wp8377232-pointing-wallpapers.jpg', 'Parts', 'active'),
-(3, 'Test', 'Parts', 19, 200, '../inventory/img/hjkt4oCM/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike', 'active'),
-(4, 'Test', 'Parts', 6, 2000, '../inventory/img/NxWI1H89/unnamed.jpg', 'Parts', 'active'),
-(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike', 'active'),
-(6, 'TEST', 'Bike', 2, 100, '../inventory/img/Guoe6Fqm/wp8377232-pointing-wallpapers.jpg', 'Test', 'active'),
-(7, 'Tsunami Frame', 'Bike', 4, 111, '../inventory/img/anBT5qQn/IMG_0072.JPG', 'a', ''),
-(8, 'Tsunami Frame', 'Bike', 4, 1111, '../inventory/img/exgdVGWe/IMG_0072.JPG', '1', 'active');
+INSERT INTO `tbl_inventory` (`item_id`, `item_name`, `type`, `quantity`, `price`, `image`, `description`, `status`, `brand`) VALUES
+(1, 'Breaks', 'Parts', 0, 2000, '../inventory/img/ssO0aEVm/936243-scary-background-images-1920x1080-ipad-retina.jpg', '', 'active', ''),
+(2, 'Tsunami Frame', 'Parts', 7, 6000, '../inventory/img/QvaLrYna/wp8377232-pointing-wallpapers.jpg', 'Parts', 'active', ''),
+(3, 'Test', 'Parts', 19, 200, '../inventory/img/hjkt4oCM/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike', 'active', ''),
+(4, 'Test', 'Parts', 6, 2000, '../inventory/img/NxWI1H89/unnamed.jpg', 'Parts', 'active', ''),
+(5, 'Tsunami Frame', 'Parts', 5, 4000, '../inventory/img/x45GnCsE/wp8377232-pointing-wallpapers.jpg', 'Parts of Bike', 'active', ''),
+(6, 'TEST', 'Bike', 2, 100, '../inventory/img/Guoe6Fqm/wp8377232-pointing-wallpapers.jpg', 'Test', 'active', ''),
+(7, 'Tsunami Frame', 'Bike', 4, 111, '../inventory/img/anBT5qQn/IMG_0072.JPG', 'a', '', ''),
+(8, 'Tsunami Frame', 'Bike', 4, 1111, '../inventory/img/exgdVGWe/IMG_0072.JPG', '1', 'active', ''),
+(9, 'Tsunami Frame', 'Bike', 3, 10000, '../inventory/img/c85ukqN7/download.jpg', 'A', 'active', 'Shimano'),
+(10, '1', '', 1, 1, '../inventory/img/Kz0gug1Z/unnamed.jpg', '1', 'archive', 'Select Type');
 
 -- --------------------------------------------------------
 
@@ -124,8 +147,9 @@ CREATE TABLE `tbl_itemtype` (
 --
 
 INSERT INTO `tbl_itemtype` (`itemtype_id`, `item_type`) VALUES
-(1, 'Bike'),
-(4, 'Parts');
+(5, 'Bike'),
+(6, 'Parts'),
+(7, 'Breaks');
 
 -- --------------------------------------------------------
 
@@ -185,7 +209,8 @@ CREATE TABLE `tbl_orders` (
 
 INSERT INTO `tbl_orders` (`order_id`, `order_date`, `total_quantity`, `total_amount`, `inventory_ids`, `serial_number`) VALUES
 (1, '2023-03-08', 2, 6200, '[\"3\",\"2\"]', 'LGDWO9K3'),
-(2, '2023-03-08', 8, 20400, '[\"4\",\"3\",\"2\"]', 'AMYMUVQ2');
+(2, '2023-03-08', 8, 20400, '[\"4\",\"3\",\"2\"]', 'AMYMUVQ2'),
+(3, '2023-04-16', 1, 10000, '[\"9\"]', 'KESOUX55');
 
 --
 -- Indexes for dumped tables
@@ -196,6 +221,12 @@ INSERT INTO `tbl_orders` (`order_id`, `order_date`, `total_quantity`, `total_amo
 --
 ALTER TABLE `order_form`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `tbl_brand`
+--
+ALTER TABLE `tbl_brand`
+  ADD PRIMARY KEY (`brand_id`);
 
 --
 -- Indexes for table `tbl_inventory`
@@ -238,16 +269,22 @@ ALTER TABLE `order_form`
   MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
+-- AUTO_INCREMENT for table `tbl_brand`
+--
+ALTER TABLE `tbl_brand`
+  MODIFY `brand_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
-  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `item_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_itemtype`
 --
 ALTER TABLE `tbl_itemtype`
-  MODIFY `itemtype_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `itemtype_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_login`
@@ -259,13 +296,13 @@ ALTER TABLE `tbl_login`
 -- AUTO_INCREMENT for table `tbl_orderconfirm`
 --
 ALTER TABLE `tbl_orderconfirm`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `tbl_orders`
 --
 ALTER TABLE `tbl_orders`
-  MODIFY `order_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `order_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
