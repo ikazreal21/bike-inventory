@@ -101,6 +101,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <th>Quantity</th>
             <th>Price</th>
             <th>Stock Status</th>
+            <th>Action</th>
         </tr>
           <?php foreach ($row as $i => $item):?>
         <tr>
@@ -111,6 +112,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['quantity']; ?></td>
 			<td>₱ <?php echo number_format($item['price'],  2, '.', ','); ?></td>
 			<td style="color:red;">Out on Stock</td>
+      <td><a href="update_inventory.php?id=<?php echo $item['item_id']; ?>">Edit</a></td>
       </tr>
         <?php endforeach;?>
         
