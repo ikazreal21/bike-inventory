@@ -87,6 +87,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             <th>Total Quantity</th>
             <th>Total Amount</th>
             <th>Inventory Id's</th>
+            <th>Actions</th>
         </tr>
 		  <?php foreach ($row as $i => $item):?>
         <tr>
@@ -96,6 +97,7 @@ $row = $statement->fetchAll(PDO::FETCH_ASSOC);
 			<td><?php echo $item['total_quantity']; ?></td>
 			<td>₱ <?php echo number_format($item['total_amount'],  2, '.', ','); ?></td>
 			<td><?php echo $item['inventory_ids']; ?></td>
+			<td><a  onclick="window.open(this.href); return false" href="../order/printReceipt.php?id=<?php echo $item['serial_number']; ?>">Print</a></td>
         </tr>
         <?php endforeach;?>	
         </table>
